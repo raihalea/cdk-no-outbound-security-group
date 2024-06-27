@@ -5,9 +5,11 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   name: 'no-outbound-sg',
   projenrcTs: true,
 
-  // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],             /* Build dependencies for this module. */
-  // packageName: undefined,  /* The "name" in package.json. */
+  deps: [
+    'typescript@^5.3.3',
+  ],
+  devDeps: [
+    'eslint@"^8.56.0',
+  ],
 });
 project.synth();
