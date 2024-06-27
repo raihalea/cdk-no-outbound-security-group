@@ -1,5 +1,5 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
-import { Instance, InstanceType, InstanceClass, InstanceSize, MachineImage, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { Instance, InstanceType, InstanceClass, InstanceSize, MachineImage, Vpc, Port } from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
 import { NoOutboundTrafficSecurityGroup } from './utils/default-security-group';
 
@@ -11,16 +11,22 @@ export class MyStack extends Stack {
       natGateways: 0,
     });
 
-    const sg = new NoOutboundTrafficSecurityGroup(this, 'SecurityGroup', {
+    const sgA = new NoOutboundTrafficSecurityGroup(this, 'SecurityGroupA', {
       vpc: vpc,
     });
 
-    new Instance(this, 'Instance', {
+
+    const instance = new Instance(this, 'Instance', {
       vpc: vpc,
       instanceType: InstanceType.of( InstanceClass.T3, InstanceSize.MICRO ),
       machineImage: MachineImage.latestAmazonLinux2023(),
-      securityGroup: sg,
+      securityGroup: sgA,
     });
+
+    const sgB = new NoOutboundTrafficSecurityGroup(this, 'SecurityGroupB', {
+      vpc: vpc,
+    });
+    instance.connections.allowTo(sgB, Port.allIcmp());
   }
 }
 
