@@ -25,6 +25,7 @@ export class MyStack extends Stack {
 
     const sgB = new NoOutboundTrafficSecurityGroup(this, 'SecurityGroupB', {
       vpc: vpc,
+      securityGroupName: 'test',
     });
     instance.connections.allowTo(sgB, Port.allIcmp());
   }
